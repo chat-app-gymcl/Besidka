@@ -2,19 +2,6 @@ import 'package:flutter/material.dart';
 
 void main() => runApp(QuizApp());
 
-class Question {
-  String question;
-  String answer;
-
-  Question(this.question, this.answer);
-}
-
-List<Question> questions = [
-  Question('Jaká je hlavní město Francie?', 'Paříž'),
-  Question('Jaká je hlavní město Španělska?', 'Madrid'),
-  Question('Jaké je hlavní město Itálie?', 'Řím'),
-];
-
 class QuizApp extends StatelessWidget {
   int currentQuestionIndex = 0;
 
@@ -26,22 +13,22 @@ class QuizApp extends StatelessWidget {
     String correctAnswer = questions[currentQuestionIndex].answer;
 
     if (userAnswer == correctAnswer) {
-      print('Správná odpověď!');
+      print('Correct answer!');
     } else {
-      print('Špatná odpověď');
+      print('Incorrect answer');
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Aplikace pro kvíz',
+      title: 'Quiz App',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Aplikace pro kvíz'),
+          title: Text('Quiz App'),
         ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -49,7 +36,7 @@ class QuizApp extends StatelessWidget {
             Text(questions[currentQuestionIndex].question),
             TextField(
               decoration: InputDecoration(
-                hintText: 'Zadejte svou odpověď zde',
+                hintText: 'Enter your answer here',
               ),
               onSubmitted: (String userAnswer) {
                 checkAnswer(userAnswer);
@@ -57,7 +44,7 @@ class QuizApp extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: nextQuestion,
-              child: Text('Další otázka'),
+              child: Text('Next Question'),
             ),
           ],
         ),
@@ -65,3 +52,16 @@ class QuizApp extends StatelessWidget {
     );
   }
 }
+
+class Question {
+  String question;
+  String answer;
+
+  Question(this.question, this.answer);
+}
+
+List<Question> questions = [
+  Question('What is the capital of France?', 'Paris'),
+  Question('What is the capital of Spain?', 'Madrid'),
+  Question('What is the capital of Italy?', 'Rome'),
+];
