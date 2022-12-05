@@ -13,38 +13,44 @@ class QuizApp extends StatelessWidget {
     String correctAnswer = questions[currentQuestionIndex].answer;
 
     if (userAnswer == correctAnswer) {
-      print('Correct answer!');
+      print('Správná odpověď!');
     } else {
-      print('Incorrect answer');
+      print('Špatná odpověď');
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Quiz App',
+      title: 'Aplikace pro kvíz',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Quiz App'),
+          title: Text('Aplikace pro kvíz'),
         ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(questions[currentQuestionIndex].question),
-            RaisedButton(
+            TextField(
+              decoration: InputDecoration(
+                hintText: 'Zadejte svou odpověď zde',
+              ),
+              onSubmitted: (String userAnswer) {
+                checkAnswer(userAnswer);
+              },
+            ),
+            ElevatedButton(
               onPressed: nextQuestion,
-              child: Text('Submit Answer'),
+              child: Text('Další otázka'),
             ),
           ],
         ),
       ),
     );
   }
-
-  RaisedButton({required void Function() onPressed, required Text child}) {}
 }
 
 class Question {
@@ -55,7 +61,7 @@ class Question {
 }
 
 List<Question> questions = [
-  Question('What is the capital of France?', 'Paris'),
-  Question('What is the capital of Spain?', 'Madrid'),
-  Question('What is the capital of Italy?', 'Rome'),
+  Question('Jaká je hlavní město Francie?', 'Paříž'),
+  Question('Jaká je hlavní město Španělska?', 'Madrid'),
+  Question('Jaké je hlavní město Itálie?', 'Řím'),
 ];
