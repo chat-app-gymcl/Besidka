@@ -1,67 +1,121 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(QuizApp());
+import './quiz.dart';
+import './result.dart';
 
-class QuizApp extends StatelessWidget {
-  int currentQuestionIndex = 0;
+void main() => runApp(const MyApp());
 
-  void nextQuestion() {
-    currentQuestionIndex = (currentQuestionIndex + 1) % questions.length;
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() {
+    return _MyAppState();
+  }
+}
+
+class _MyAppState extends State<MyApp> {
+  final _questions = const [
+    {
+      'questionText': 'Q1. Who created Flutter?',
+      'answers': [
+        {'text': 'Facebook', 'score': -2},
+        {'text': 'Adobe', 'score': -2},
+        {'text': 'Google', 'score': 10},
+        {'text': 'Microsoft', 'score': -2},
+      ],
+    },
+    {
+      'questionText': 'Q2. What is Flutter?',
+      'answers': [
+        {'text': 'Android Development Kit', 'score': -2},
+        {'text': 'IOS Development Kit', 'score': -2},
+        {'text': 'Web Development Kit', 'score': -2},
+        {
+          'text':
+              'SDK to build beautiful IOS, Android, Web & Desktop Native Apps',
+          'score': 10
+        },
+      ],
+    },
+    {
+      'questionText': ' Q3. Which programing language is used by Flutter',
+      'answers': [
+        {'text': 'Ruby', 'score': -2},
+        {'text': 'Dart', 'score': 10},
+        {'text': 'C++', 'score': -2},
+        {'text': 'Kotlin', 'score': -2},
+      ],
+    },
+    {
+      'questionText': 'Q4. Who created Dart programing language?',
+      'answers': [
+        {'text': 'Lars Bak and Kasper Lund', 'score': 10},
+        {'text': 'Brendan Eich', 'score': -2},
+        {'text': 'Bjarne Stroustrup', 'score': -2},
+        {'text': 'Jeremy Ashkenas', 'score': -2},
+      ],
+    },
+    {
+      'questionText':
+          'Q5. Is Flutter for Web and Desktop available in stable version?',
+      'answers': [
+        {
+          'text': 'Yes',
+          'score': -2,
+        },
+        {'text': 'No', 'score': 10},
+      ],
+    },
+  ];
+
+  var _questionIndex = 0;
+  var _totalScore = 0;
+
+  void _resetQuiz() {
+    setState(() {
+      _questionIndex = 0;
+      _totalScore = 0;
+    });
   }
 
-  void checkAnswer(String userAnswer) {
-    String correctAnswer = questions[currentQuestionIndex].answer;
+  void _answerQuestion(int score) {
+    _totalScore += score;
 
-    if (userAnswer == correctAnswer) {
-      print('Correct answer!');
+    setState(() {
+      _questionIndex = _questionIndex + 1;
+    });
+    // ignore: avoid_print
+    print(_questionIndex);
+    if (_questionIndex < _questions.length) {
+      // ignore: avoid_print
+      print('We have more questions!');
     } else {
-      print('Incorrect answer');
+      // ignore: avoid_print
+      print('No more questions!');
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Quiz App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Quiz App'),
+          title: const Text('Geeks for Geeks'),
+          backgroundColor: const Color(0xFF00E676),
         ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(questions[currentQuestionIndex].question),
-            TextField(
-              decoration: InputDecoration(
-                hintText: 'Enter your answer here',
-              ),
-              onSubmitted: (String userAnswer) {
-                checkAnswer(userAnswer);
-              },
-            ),
-            ElevatedButton(
-              onPressed: nextQuestion,
-              child: Text('Next Question'),
-            ),
-          ],
-        ),
-      ),
-    );
+        body: Padding(
+          padding: const EdgeInsets.all(30.0),
+          child: _questionIndex < _questions.length
+              ? Quiz(
+                  answerQuestion: _answerQuestion,
+                  questionIndex: _questionIndex,
+                  questions: _questions,
+                ) //Quiz
+              : Result(_totalScore, _resetQuiz),
+        ), //Padding
+      ), //Scaffold
+      debugShowCheckedModeBanner: false,
+    ); //MaterialApp
   }
 }
-
-class Question {
-  String question;
-  String answer;
-
-  Question(this.question, this.answer);
-}
-
-List<Question> questions = [
-  Question('What is the capital of France?', 'Paris'),
-  Question('What is the capital of Spain?', 'Madrid'),
-  Question('What is the capital of Italy?', 'Rome'),
-];
