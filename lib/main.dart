@@ -2,6 +2,19 @@ import 'package:flutter/material.dart';
 
 void main() => runApp(QuizApp());
 
+class Question {
+  String question;
+  String answer;
+
+  Question(this.question, this.answer);
+}
+
+List<Question> questions = [
+  Question('Jaká je hlavní město Francie?', 'Paříž'),
+  Question('Jaká je hlavní město Španělska?', 'Madrid'),
+  Question('Jaké je hlavní město Itálie?', 'Řím'),
+];
+
 class QuizApp extends StatelessWidget {
   int currentQuestionIndex = 0;
 
@@ -42,7 +55,7 @@ class QuizApp extends StatelessWidget {
                 checkAnswer(userAnswer);
               },
             ),
-            TextButton(
+            ElevatedButton(
               onPressed: nextQuestion,
               child: Text('Další otázka'),
             ),
@@ -52,16 +65,3 @@ class QuizApp extends StatelessWidget {
     );
   }
 }
-
-class Question {
-  String question;
-  String answer;
-
-  Question(this.question, this.answer);
-}
-
-List<Question> questions = [
-  Question('Jaká je hlavní město Francie?', 'Paříž'),
-  Question('Jaká je hlavní město Španělska?', 'Madrid'),
-  Question('Jaké je hlavní město Itálie?', 'Řím'),
-];
